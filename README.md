@@ -17,7 +17,7 @@ financial-ipi-benchmark/
 │   ├── benchmark_dataset/     
 │   │   └── financial_injection_benchmark_unified.csv  # The generated dataset of 1,250 adversarial prompts
 │   ├── input/                 
-│   │   └── UNIFIED FINANCIAL CONTEXT ARCHIVE.docx     # The source text for the 10 financial carrier documents
+│   │   └── unified_financial_context_archive.pdf  # The source text for the 10 financial carrier documents
 │   └── results/               
 │       ├── graded_by_llm/     # Row-by-row logs of the "LLM-as-a-Judge" evaluation
 │       ├── raw_responses/     # The raw JSON/CSV output from the Model APIs

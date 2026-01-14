@@ -1,0 +1,9 @@
+pandas
+numpy
+matplotlib
+seaborn
+tqdm
+openai
+anthropic
+google-generativeai
+

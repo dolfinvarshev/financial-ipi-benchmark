@@ -1,0 +1,18 @@
+# Python artifacts
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# API Keys and Environment Variables (Safety Net)
+.env
+api_keys.txt
+config.py
+secrets.json
+
+# IDE settings
+.idea/
+.vscode/

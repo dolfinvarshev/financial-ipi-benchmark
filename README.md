@@ -1,162 +1,88 @@
-Assistant or Adversary?
-Auditing Financial LLMs Against Indirect Prompt Injection
+# Assistant or Adversary? Auditing Financial LLMs Against Indirect Prompt Injection
 
-This repository contains the dataset, codebase, and evaluation results for the academic study:
+This repository contains the dataset, codebase, and evaluation results for the academic study **"Assistant or Adversary? Auditing Financial LLMs Against Indirect Prompt Injection"**.
 
-Assistant or Adversary? Auditing Financial LLMs Against Indirect Prompt Injection
+We introduce a domain-specific benchmark of **1,250 attack instances** spanning 10 high-stakes financial niches (e.g., Insider Trading, Payroll, Strategic Planning) to evaluate the robustness of state-of-the-art LLMs (GPT-4o-mini, Claude-3-Haiku, Gemini-2.5-Flash).
 
-The project introduces a domain-specific benchmark designed to evaluate the robustness of large language models (LLMs) against Indirect Prompt Injection (IPI) attacks in high-stakes financial contexts.
+## 📂 Repository Structure
 
-📌 Overview
+The project is organized to ensure full reproducibility of the pipeline, from attack generation to final visualization.
 
-Total attack instances: 1,250
-
-Financial domains: 10 high-risk niches (e.g., Insider Trading, Payroll, Strategic Planning)
-
-Models evaluated:
-
-GPT-4o-mini
-
-Claude-3-Haiku
-
-Gemini-2.5-Flash
-
-The benchmark systematically measures attack success rates (ASR) and information leakage severity across models, domains, and attack vectors.
-
-📂 Repository Structure
-
-The repository is organized to ensure full reproducibility of the experimental pipeline, from attack generation to final visualization.
-
+```text
 financial-ipi-benchmark/
 ├── assets/
-│ ├── figures/ # Visualization figures used in the paper
-│ └── paper.pdf # Final academic thesis PDF
-│
+│   ├── figures/               # The 10 visualization figures used in the paper
+│   └── paper.pdf              # The final academic thesis PDF
 ├── data/
-│ ├── benchmark_dataset/
-│ │ └── financial_injection_benchmark_unified.csv
-│ │ # Unified dataset of 1,250 adversarial prompts
-│ ├── input/
-│ │ └── UNIFIED FINANCIAL CONTEXT ARCHIVE.docx
-│ │ # Source text for the 10 financial carrier documents
-│ └── results/
-│ ├── graded_by_llm/ # LLM-as-a-Judge evaluation logs
-│ ├── raw_responses/ # Raw JSON/CSV outputs from model APIs
-│ └── final_benchmark_summary.csv
-│ # Aggregated metrics (ASR, Severity)
-│
-├── scripts/ # Python scripts for the experimental pipeline
-├── .gitignore # Security and exclusion configuration
-├── README.md # Project documentation
-└── requirements.txt # Python dependencies
-
+│   ├── benchmark_dataset/     
+│   │   └── financial_injection_benchmark_unified.csv  # The generated dataset of 1,250 adversarial prompts
+│   ├── input/                 
+│   │   └── UNIFIED FINANCIAL CONTEXT ARCHIVE.docx     # The source text for the 10 financial carrier documents
+│   └── results/               
+│       ├── graded_by_llm/     # Row-by-row logs of the "LLM-as-a-Judge" evaluation
+│       ├── raw_responses/     # The raw JSON/CSV output from the Model APIs
+│       └── final_benchmark_summary.csv # Aggregated metrics (ASR, Severity) used for plotting
+├── scripts/                   # Python executables for the experimental pipeline
+├── .gitignore                 # Security configuration
+├── README.md                  # Project documentation
+└── requirements.txt           # Python dependencies
 🚀 Key Findings
+Our evaluation of 1,250 attacks across 10 financial niches revealed significant security gaps:
 
-Our evaluation across 1,250 indirect prompt injection attacks reveals notable security gaps in financial LLM deployments:
+Vulnerability: GPT-4o-mini exhibited the highest susceptibility (60.4% ASR), often prioritizing embedded instructions over safety constraints.
 
-🔓 Model Vulnerability
+Robustness: Claude-3-Haiku proved the most resilient (26.5% ASR), demonstrating stricter refusal behaviors.
 
-GPT-4o-mini showed the highest susceptibility
-
-60.4% Attack Success Rate (ASR)
-
-Frequently prioritized embedded instructions over safety constraints
-
-🛡️ Model Robustness
-
-Claude-3-Haiku was the most resilient
-
-26.5% ASR
-
-Demonstrated consistent refusal and constraint adherence
-
-⚠️ High-Risk Contexts
-
-Future Strategy & Planning documents were the most vulnerable
-
-61.1% average ASR
-
-Role Impersonation attacks (e.g., “I am the CEO”) were the most effective attack vector
+High-Risk Niches: Future Strategy & Planning documents were the most vulnerable context (61.1% avg ASR), while "Role Impersonation" attacks (e.g., "I am the CEO") were the most effective vector.
 
 🛠️ Reproduction Pipeline
+To reproduce the results, execute the scripts in the following order:
 
-Follow the steps below to fully reproduce the benchmark results.
-
-1️⃣ Attack Generation
-
-Generates 1,250 adversarial prompts by combining:
-
-10 financial carrier documents
-
-5 attack vectors
-
-5 obfuscation strategies
+1. Attack Generation
+Generates the 1,250 adversarial prompts by combining the 10 carrier documents with 5 attack vectors and 5 obfuscation strategies.
 
 Script: scripts/creating_ipi_attacks.py
 
-Output:
-data/benchmark_dataset/financial_injection_benchmark_unified.csv
+Output: data/benchmark_dataset/financial_injection_benchmark_unified.csv
 
-2️⃣ Model Execution
-
-Executes the generated prompts against the target model APIs.
+2. Execution
+Runs the generated prompts against the target APIs (OpenAI, Anthropic, Google).
 
 Script: scripts/execution_code.py
 
-Output directory:
-data/results/raw_responses/
+Output: Saves raw files to data/results/raw_responses/
 
-Requires valid API keys for OpenAI, Anthropic, and Google.
-
-3️⃣ Evaluation (LLM-as-a-Judge)
-
-Grades each model response for:
-
-Attack success (ASR)
-
-Information leakage severity
-
-Evaluation combines an independent LLM with regex-based parsers.
+3. Evaluation (LLM-as-a-Judge)
+Uses an independent LLM and Regex parsers to grade the responses for success (ASR) and leakage severity.
 
 Script: scripts/evaluate_results.py
 
-Output directory:
-data/results/graded_by_llm/
+Output: Saves graded logs to data/results/graded_by_llm/
 
-4️⃣ Summarization
-
-Aggregates graded evaluations into final benchmark metrics.
+4. Summarization
+Aggregates the graded logs into a final statistical summary.
 
 Script: scripts/creating_summary.py
 
-Output:
-data/results/final_benchmark_summary.csv
+Output: data/results/final_benchmark_summary.csv
 
-5️⃣ Visualization
-
-Generates the figures used in the paper (heatmaps and bar charts).
+5. Visualization
+Generates the heatmaps and bar charts presented in the paper.
 
 Script: scripts/generating_plots_from_benchmark_summary.py
 
-Output directory:
-assets/figures/
+Output: Saves images to assets/figures/
 
 ⚙️ Installation
-Clone the Repository
-git clone https://github.com/YOUR_USERNAME/financial-ipi-benchmark.git
+1. Clone the repository:
+
+Bash
+
+git clone [https://github.com/YOUR_USERNAME/financial-ipi-benchmark.git](https://github.com/YOUR_USERNAME/financial-ipi-benchmark.git)
 cd financial-ipi-benchmark
+2. Install dependencies:
 
-Install Dependencies
+Bash
+
 pip install -r requirements.txt
-
-Environment Setup
-
-Set your API keys as environment variables (or via a local secrets file) before running:
-
-execution_code.py
-
-📜 License & Usage
-
-This project is intended strictly for academic and research purposes.
-
-If you plan to reuse the dataset, benchmark design, or evaluation methodology, please cite the associated paper.
+3. Environment Setup: Ensure you have your API keys set up in your environment variables (or local secrets file) to run execution_code.py.
